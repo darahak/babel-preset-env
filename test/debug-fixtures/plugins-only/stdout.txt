@@ -14,6 +14,8 @@ Using targets:
 }
 
 Modules transform: commonjs
+Processing Built-ins (useBuiltIns): false
+Processing Syntax (useSyntax): true
 
 Using plugins:
   transform-es2015-destructuring {"firefox":"52"}

@@ -100,23 +100,37 @@ function getPlatformSpecificDefaultFor(targets) {
   return isAnyTarget || isWebTarget ? defaultWebIncludes : [];
 }
 
+const getTransformations = (targets, include, exclude, useSyntax) => {
+  let transformations = Object.keys(pluginList);
+
+  if (useSyntax) {
+    const filterPlugins = filterItem.bind(
+      null,
+      targets,
+      exclude.plugins,
+      pluginList,
+    );
+
+    transformations = transformations.filter(filterPlugins);
+  }
+
+  return transformations.concat(include.plugins);
+};
+
 export default function buildPreset(context, opts = {}) {
   const validatedOptions = normalizeOptions(opts);
-  const { debug, loose, moduleType, useBuiltIns } = validatedOptions;
+  const { debug, loose, moduleType, useBuiltIns, useSyntax } = validatedOptions;
 
   const targets = getTargets(validatedOptions.targets);
   const include = transformIncludesAndExcludes(validatedOptions.include);
   const exclude = transformIncludesAndExcludes(validatedOptions.exclude);
 
-  const filterPlugins = filterItem.bind(
-    null,
+  const transformations = getTransformations(
     targets,
-    exclude.plugins,
-    pluginList,
+    include,
+    exclude,
+    useSyntax,
   );
-  const transformations = Object.keys(pluginList)
-    .filter(filterPlugins)
-    .concat(include.plugins);
 
   let polyfills;
   let polyfillTargets;
@@ -140,6 +154,8 @@ export default function buildPreset(context, opts = {}) {
     console.log("\nUsing targets:");
     console.log(JSON.stringify(prettifyTargets(targets), null, 2));
     console.log(`\nModules transform: ${moduleType}`);
+    console.log(`Processing Built-ins (useBuiltIns): ${useBuiltIns}`);
+    console.log(`Processing Syntax (useSyntax): ${useSyntax}`);
     console.log("\nUsing plugins:");
     transformations.forEach(transform => {
       logPlugin(transform, targets, pluginList);

@@ -8,6 +8,8 @@ Using targets:
 }
 
 Modules transform: commonjs
+Processing Built-ins (useBuiltIns): true
+Processing Syntax (useSyntax): true
 
 Using plugins:
   transform-es2015-arrow-functions {"ie":"10"}

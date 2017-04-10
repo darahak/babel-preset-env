@@ -13,6 +13,8 @@ Using targets:
 }
 
 Modules transform: commonjs
+Processing Built-ins (useBuiltIns): entry
+Processing Syntax (useSyntax): true
 
 Using plugins:
   transform-es2015-block-scoping {"electron":"0.36"}

@@ -1,3 +1,6 @@
+The uglify target has been deprecated. Set the top level
+option `useSyntax: false` instead.
+
 babel-preset-env: `DEBUG` option
 
 Using targets:
@@ -7,6 +10,8 @@ Using targets:
 }
 
 Modules transform: false
+Processing Built-ins (useBuiltIns): entry
+Processing Syntax (useSyntax): true
 
 Using plugins:
   transform-es2015-arrow-functions {"uglify":true}

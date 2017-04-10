@@ -62,6 +62,8 @@ const outputDecimalWarning = decimalTargets => {
   console.log("");
 };
 
+let uglifyDeprecateShown = false;
+
 const targetParserMap = {
   __default: (target, value) => [target, semverify(value)],
 
@@ -74,8 +76,20 @@ const targetParserMap = {
     return [target, parsed];
   },
 
+  // TODO: Remove in next version.
   // Only valid value for Uglify is `true`
-  uglify: (target, value) => [target, value === true],
+  uglify: (target, value) => {
+    if (!uglifyDeprecateShown) {
+      console.log("");
+      console.log("The uglify target has been deprecated. Set the top level");
+      console.log("option `useSyntax: false` instead.");
+      console.log("");
+
+      uglifyDeprecateShown = true;
+    }
+
+    return [target, value === true];
+  },
 };
 
 const getTargets = (targets = {}) => {
