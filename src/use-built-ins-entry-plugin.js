@@ -38,18 +38,21 @@ export default function({ types: t }) {
   }
 
   function createImports(polyfills, requireType, regenerator) {
-    const imports = polyfills
-      .filter((el, i, arr) => arr.indexOf(el) === i)
-      .map(polyfill => createImport(polyfill, requireType, true));
+    const items = Array.isArray(polyfills) ? new Set(polyfills) : polyfills;
+    const imports = [];
 
-    return [
-      ...imports,
-      regenerator &&
+    items.forEach(p => imports.push(createImport(p, requireType, true)));
+
+    if (regenerator) {
+      imports.push(
         createImport(
           "babel-polyfill/lib/regenerator-runtime/runtime",
           requireType,
         ),
-    ].filter(Boolean);
+      );
+    }
+
+    return imports;
   }
 
   const isPolyfillImport = {
